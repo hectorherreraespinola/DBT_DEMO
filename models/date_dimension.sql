@@ -1,0 +1,40 @@
+/* WITH CTE AS (
+
+),
+
+CTE2 AS (
+    stuff
+    FROM CTE
+),
+
+CTE3 AS(
+    stuff FROM CTE2
+)
+
+SELECT * FROM CTE3
+
+*/
+
+
+WITH CTE AS(
+SELECT
+TO_TIMESTAMP(STARTED_AT) AS STARTED_AT, -- Column name
+DATE(TO_TIMESTAMP(STARTED_AT)) AS DATE_STARTED_AT,
+HOUR(TO_TIMESTAMP(STARTED_AT)) AS HOUR_STARTED_AT,
+
+
+{{day_type('STARTED_AT')}} AS DAY_TYPE,
+
+{{get_season('STARTED_AT')}} AS STATION_OF_YEAR
+
+
+FROM
+{{source('demo','bike')}}
+WHERE STARTED_AT !='started_at'
+
+)
+
+SELECT
+*
+FROM CTE
+
